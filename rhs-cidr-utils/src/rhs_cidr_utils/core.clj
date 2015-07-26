@@ -23,7 +23,7 @@
   (format "%d.%d.%d.%d"
     (bit-shift-right ip-addr 24)
     (bit-shift-right (bit-and 0x00ff0000 ip-addr) 16)
-    (bit-shift-right (bit-and  0x0000ff00 ip-addr)  8)
+    (bit-shift-right (bit-and 0x0000ff00 ip-addr)  8)
     (bit-and 0x000000ff ip-addr)))
      
 (defn cidr->bitmask

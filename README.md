@@ -8,6 +8,13 @@ Given a string of an IP address in dotted-decimal form, return the IP address as
 ``` 
 ...returns 0x1020304.
 
+### bits->dotted
+Given a binary IP address, generate its corresponding dotted-octet string. *E.g.*,
+```
+(bits->dotted 0x0a0b0920)
+```
+... returns *"10.11.9.32"*
+
 ### cidr->bitmask
 Given the string form of a CIDR, e.g., "10.0.0.0/8", return the net mask as a binary long. *E.g.*, 
 ```
@@ -33,4 +40,3 @@ Given the string representation of a CIDR, return a vector containing the lowest
 (get-cidr-range "127.64.0.0/16")
 ```
 returns *[0x7f400000 0x7f40ffff]*
-
