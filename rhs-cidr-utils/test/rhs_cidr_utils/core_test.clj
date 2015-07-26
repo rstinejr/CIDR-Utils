@@ -28,7 +28,8 @@
 
 (deftest within-mask
   (testing "within-mask, ip in scope"
-    (is (ip-within-mask? (cidr->bitmask "10.5.0.0/16") 16 (dotted->bits "10.5.169.250"))))
+    (is (ip-within-mask? (cidr->bitmask "10.5.0.0/16")  16 (dotted->bits "10.5.169.250"))))
+    (is (ip-within-mask? (cidr->bitmask "204.0.0.0/24") 24 (dotted->bits "204.255.255.255")))
   )
 
 
