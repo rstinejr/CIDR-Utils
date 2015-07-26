@@ -23,3 +23,10 @@
     (let [ip-bits (dotted->bits (first parts))
           shift-n (- 32 (Integer. (last parts)))]
       (left-8 (bit-shift-right ip-bits 8)))))
+
+(defn ip-within-mask?
+  "Bit operations to determine whether a binary IP address is within the scope of a CIDR."
+  [cidr-mask mask-width ip]
+  (let [shift    (- 32 mask-width)
+        net-part (bit-shift-left (bit-shift-right ip shift) shift)]
+    (= cidr-mask net-part)))

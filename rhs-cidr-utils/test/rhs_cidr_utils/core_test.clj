@@ -20,7 +20,15 @@
     (is (thrown? Exception (cidr->bitmask legit-octet)))))
 
 (def cidr-mask (- legit-int 13))
+(def cidr-str (str legit-octet "/24"))
 
 (deftest happy-cidr-mask
   (testing "happy path, cidr->bitmask"
-    (is (= cidr-mask (cidr->bitmask (str legit-octet "/24"))))))
+    (is (= cidr-mask (cidr->bitmask cidr-str)))))
+
+(deftest within-mask
+  (testing "within-mask, ip in scope"
+    (is (ip-within-mask? (cidr->bitmask "10.5.0.0/16") 16 (dotted->bits "10.5.169.250"))))
+  )
+
+
