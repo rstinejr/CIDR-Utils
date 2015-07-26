@@ -34,3 +34,8 @@
   (testing "ip not within cidr"
     (is (not (ip-within-mask? (cidr->bitmask "10.5.5.0/23")  23 (dotted->bits "10.5.6.250"))))
     (is (not (ip-within-mask? (cidr->bitmask "204.0.0.0/10") 10 (dotted->bits "204.127.45.2"))))))
+
+(deftest cidr-range
+  (testing "legit cidrs"
+    (let [cidr-range (get-cidr-range "10.9.0.0/16")]
+      (is (and (= 0xa090000 (cidr-range 0)) (= 0xa09ffff (cidr-range 1)))))))
