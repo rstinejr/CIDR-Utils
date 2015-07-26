@@ -1,10 +1,10 @@
 # CIDR-Utils
 Clojure implementations of utility functions for CIDRs and IP
 
-### dotted-bits  
+### dotted->bits  
 Given a string of an IP address in dotted-decimal form, return the IP address as a binary long.  *E.g.*,   
 ```
-(dotted-bits "1.2.3.4")
+(dotted->bits "1.2.3.4")
 ``` 
 ...returns 0x1020304.
 
