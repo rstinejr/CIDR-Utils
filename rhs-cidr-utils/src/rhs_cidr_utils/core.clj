@@ -14,6 +14,16 @@
     (let [decimals (into [] (flatten (map (fn [s] (Integer. s)) decimal-strs)))]
       (bit-or (decimals 3) (left-8 (bit-or (decimals 2) (left-8 (bit-or (decimals 1) (left-8 (decimals 0))))))))))
 
+(defn bits->dotted
+  "Convert a binary IP address (an int) to a dotted-octet string."
+  [ip-addr]
+  (when (not= 0 (bit-and 0xffffffff00000000 ip-addr))
+    (throw (ex-info (str "Integer '" ip-addr "' out of range for IPv4."){:causes #{:invalid-parm}})))
+  (str (bit-shift-right ip-addr 24) "."
+       (bit-shift-right (bit-and 0x00ff0000 ip-addr) 16) "."
+       (bit-shift-right (bit-and   0x00ff00 ip-addr)  8) "."
+       (bit-and 0x00ff ip-addr)));
+     
 (defn cidr->bitmask
   "Given the string form of a CIDR, convert to its bit mask."
   [cidr-str]
