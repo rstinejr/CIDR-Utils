@@ -16,6 +16,11 @@
     (is (= legit-int (dotted->bits legit-octet)))
     (is (= 0x1020304 (dotted->bits "1.2.3.4")))))
 
+(deftest happy-bin-to-dotted
+  (testing "convert bin to dotted."
+    (is (= "127.2.3.64" (bits->dotted 0x7f020340)))
+    (is (= "10.11.9.32" (bits->dotted 0x0a0b0920)))))
+
 (deftest bad-cidr
   (testing "poorly formed CIDR string"
     (is (thrown? Exception (cidr->bitmask legit-octet)))))
