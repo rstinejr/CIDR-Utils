@@ -17,7 +17,6 @@
 (defn bits->dotted
   "Convert a binary IP address (an int) to a dotted-octet string."
   [ip-addr]
-  
   (when (not= 0 (bit-shift-right ip-addr 32))
     (throw (ex-info (str "Integer '" ip-addr "' out of range for IPv4."){:causes #{:invalid-parm}})))
   (format "%d.%d.%d.%d"
