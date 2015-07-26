@@ -50,3 +50,8 @@
           doc-range  (get-cidr-range "127.64.0.0/16")]  ;; this range is in README.md.
       (is (and (= 0xa090000 (cidr-range 0)) (= 0xa09ffff (cidr-range 1)))
           (and (= 0x7f400000 (doc-range 0)) (= 0x7f40ffff (doc-range 1)))))))
+
+(deftest cidr-contained-by
+  (testing "test cidr-contained-by?"
+    (is (cidr-contained-by? "10.0.8.128/25" "10.0.0.0/16"))
+    (is (not (cidr-contained-by? "10.1.0.0/16" "10.2.0.0/16")))))
