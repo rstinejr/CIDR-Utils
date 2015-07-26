@@ -5,6 +5,14 @@
   [v]
   (bit-shift-left v 8))
 
+(defn get-cidr-width
+  "Given a CIDR string representation, \"10.9.8.7/8\", return the number of bits in the netmask (in this example, 8)."
+  [cidr]
+  (let [match-vec (re-matches #"[^/]+/([0-9]+)" cidr)]
+    (when (not= 2 (count match-vec))
+      (throw (ex-info (str "poorly-formed cidr: '" cidr "'") {:causes #{:invalid-parm}})))
+    (Integer. (match-vec 1))))
+
 (defn dotted->bits
   "Convert IPv4 dotted-octet string to its binary form."
   [dotted-octet]
@@ -45,12 +53,15 @@
 (defn get-cidr-range
   "Return a vector containing the high and low IP addresses, as Longs, witin a CIDR."
   [cidr-str]
-  (let [match-vec (re-matches #"[^/]+/([0-9]+)" cidr-str)]
-    (when (not= 2 (count match-vec))
-      (throw (ex-info (str "poorly-formed cidr: '" cidr-str "'") {:causes #{:invalid-parm}})))
-    (let [width (Integer. (match-vec 1))
-          cidr  (cidr->bitmask cidr-str)]
-      (when (or (= 0 width)(> width 31))
-        (throw (ex-info (str "Bad CIDR '" cidr-str "', width must be between 1 and 31.", {:causes #{:invalid-parm}}))))
-      (let [host-max (bit-shift-right 0xffffffff width)]
-        [cidr (bit-or cidr host-max)]))))
+  (let [width (get-cidr-width cidr-str)
+        cidr  (cidr->bitmask cidr-str)]
+    (when (or (= 0 width)(> width 31))
+      (throw (ex-info (str "Bad CIDR '" cidr-str "', width must be between 1 and 31.", {:causes #{:invalid-parm}}))))
+    (let [host-max (bit-shift-right 0xffffffff width)]
+      [cidr (bit-or cidr host-max)])))
+
+(defn cidr-contained-by?
+  "Given two string represenstations of CIDRs, return true iff all IPs within range of the first are within range of the second."
+  [cidr-1 cidr-2]
+  (let [cidr-width (get-cidr-width cidr-2)]
+    (= (bit-shift-right (cidr->bitmask cidr-1) cidr-width) (bit-shift-right (cidr->bitmask cidr-2) cidr-width))))

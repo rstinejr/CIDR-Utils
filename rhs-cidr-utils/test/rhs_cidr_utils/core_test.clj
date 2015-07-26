@@ -54,5 +54,4 @@
 (deftest cidr-contained-by
   (testing "test cidr-contained-by?"
     (is (cidr-contained-by? "10.0.8.128/25" "10.0.0.0/16"))
-    (is (not (cidr-contained-by "10.1.0.0/16" "10.2.0.0/16")))))
-
+    (is (not (cidr-contained-by? "10.1.0.0/16" "10.2.0.0/16")))))
