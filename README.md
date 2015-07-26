@@ -40,3 +40,14 @@ Given the string representation of a CIDR, return a vector containing the lowest
 (get-cidr-range "127.64.0.0/16")
 ```
 returns *[0x7f400000 0x7f40ffff]*
+
+### cidr-contained-by?
+Given the string representation of 2 CIDRs, return *true* if and only if every IP address within range of the first is also within range of the second. *E.g.*,
+```
+(cidr-contained-by? "10.0.8.128/25" "10.0.0.0/16")
+```
+...returns *true*, while
+```
+(cidr-contained-by? "10.1.0.0/16" "10.2.0.0/16")
+```
+...returns *false*. 
