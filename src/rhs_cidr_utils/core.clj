@@ -34,14 +34,15 @@
     (bit-and 0x000000ff ip-addr)))
      
 (defn cidr->bitmask
-  "Given the string form of a CIDR, convert to its bit mask."
+  "Given the string form of a CIDR, return a vector containing the binary bitmask and the CIDR width."
   [cidr-str]
   (let [parts (str/split cidr-str #"/")]
     (when (not= 2 (count parts))
       (throw (ex-info (str "Invalid CIDR '" cidr-str "', no '/'") {:causes #{:invalid-parm}})))
-    (let [ip-bits (dotted->bits (first parts))
-          shift-n (- 32 (Integer. (last parts)))]
-      (left-8 (bit-shift-right ip-bits 8)))))
+    (let [ip-bits    (dotted->bits (first parts))
+		  cidr-width (Integer. (last parts))
+          shift-n    (- 32 cidr-width)]
+      (bit-shift-left (bit-shift-right ip-bits shift-n) shift-n))))
 
 (defn ip-within-mask?
   "Bit operations to determine whether a binary IP address is within the scope of a CIDR."
