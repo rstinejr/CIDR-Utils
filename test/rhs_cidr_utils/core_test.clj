@@ -33,8 +33,9 @@
     (is (= cidr-mask  (cidr->bitmask cidr-str)))
     (is (= 0xcc000000 (cidr->bitmask "204.0.0.0/8")))   ;; 204 == 0xCC
     (is (= 0xa000000  (cidr->bitmask "10.0.0.0/8")))
-	(is (= 0x0a0b0cfc) (cidr->bitmask "10.11.12.255/30"))
-	(is (= 0x0a0b0c10) (cidr->bitmask "10.11.12.16/28"))))
+	(is (= 0xfe000000 (cidr->bitmask "255.255.255.255/7")))
+	(is (= 0x0a0b0cfc (cidr->bitmask "10.11.12.255/30")))
+	(is (= 0x0a0b0c10 (cidr->bitmask "10.11.12.16/28")))))
 
 (deftest within-mask
   (testing "within-mask, ip in scope"
