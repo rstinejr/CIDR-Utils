@@ -16,20 +16,20 @@ Given a binary IP address, generate its corresponding dotted-octet string. *E.g.
 ... returns *"10.11.9.32"*
 
 ### cidr->bitmask
-Given the string form of a CIDR, e.g., "10.0.0.0/8", return the net mask as a binary long. *E.g.*, 
+Given the string form of a CIDR, e.g., "10.0.0.0/8", return the net mask and with as a binary long and in  within a vector. *E.g.*, 
 ```
 (cidr->bitmask "10.0.0.0/8")
 ``` 
-...returns 0xa000000.
+...returns [0xa000000 8].
 
 ### ip-within-mask?
 Returns *true* if-and-only-if a CIDR mask, as a binary long and with a given width, contains an IP address. *E.g.*, 
 ```
-(ip-within-mask? 0xa000000 8 0xa0b001f)
+(rhs-cidr-utils.core/< 0xa000000 8 0xa0b001f)
 ```
 ... returns *true*,  while 
 ```
-(ip-within-mask? xa000000 16  0xa0b001f)
+(rhs-cidr-utils.core/< xa000000 16  0xa0b001f)
 ``` 
 ...returns *false*.
 
