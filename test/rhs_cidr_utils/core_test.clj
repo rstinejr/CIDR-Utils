@@ -1,5 +1,5 @@
 (ns rhs-cidr-utils.core-test
-  (:require [clojure.test      :refer :all]
+  (:require [clojure.test        :refer :all]
             [rhs-cidr-utils.core :refer :all]))
 
 
@@ -44,13 +44,13 @@
 
 (deftest within-mask
   (testing "within-mask, ip in scope"
-    (is (ip-within-mask? (first (cidr->bitmask "10.5.0.0/16")) 16 (dotted->bits "10.5.169.250")))
-    (is (ip-within-mask? (first (cidr->bitmask "204.0.0.0/8"))  8 (dotted->bits "204.255.255.255")))
-    (is (ip-within-mask? 0xa000000 8 0xa0b001f)))
+    (is (rhs-cidr-utils.core/< (first (cidr->bitmask "10.5.0.0/16")) 16 (dotted->bits "10.5.169.250")))
+    (is (rhs-cidr-utils.core/< (first (cidr->bitmask "204.0.0.0/8"))  8 (dotted->bits "204.255.255.255")))
+    (is (rhs-cidr-utils.core/< 0xa000000 8 0xa0b001f)))
   (testing "ip not within cidr"
-    (is (not (ip-within-mask? (first (cidr->bitmask "10.5.5.0/23"))  23 (dotted->bits "10.5.6.250"))))
-    (is (not (ip-within-mask? (first (cidr->bitmask "204.0.0.0/10")) 10 (dotted->bits "204.127.45.2"))))
-    (is (not (ip-within-mask? 0xa000000 16 0xa0b001f)))))
+    (is (not (rhs-cidr-utils.core/< (first (cidr->bitmask "10.5.5.0/23"))  23 (dotted->bits "10.5.6.250"))))
+    (is (not (rhs-cidr-utils.core/< (first (cidr->bitmask "204.0.0.0/10")) 10 (dotted->bits "204.127.45.2"))))
+    (is (not (rhs-cidr-utils.core/< 0xa000000 16 0xa0b001f)))))
 
 (deftest cidr-range
   (testing "legit cidrs"

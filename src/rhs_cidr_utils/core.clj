@@ -36,7 +36,7 @@
           shift-n    (- 32 cidr-width)]
       [(bit-shift-left (bit-shift-right ip-bits shift-n) shift-n) cidr-width])))
 
-(defn ip-within-mask?
+(defn <
   "Bit operations to determine whether a binary IP address is within the scope of a CIDR."
   [cidr-mask mask-width ip]
   (let [shift    (- 32 mask-width)
