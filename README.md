@@ -22,7 +22,7 @@ Given the string form of a CIDR, e.g., "10.0.0.0/8", return the net mask and wit
 ``` 
 ...returns [0xa000000 8].
 
-### ip-within-mask?
+### rhs-cidr-utils.core/<
 Returns *true* if-and-only-if a CIDR mask, as a binary long and with a given width, contains an IP address. *E.g.*, 
 ```
 (rhs-cidr-utils.core/< 0xa000000 8 0xa0b001f)
