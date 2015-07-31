@@ -21,6 +21,11 @@
     (is (= "127.2.3.64" (bits->dotted 0x7f020340)))
     (is (= "10.11.9.32" (bits->dotted 0x0a0b0920)))))
 
+(deftest test-width
+  (testing "get width from cidr->bitmask"
+    (is (= 26 ((cidr->bitmask "192.34.66.127/26") 1)))
+	(is (= 5  ((cidr->bitmask "10.10.127.168/5")  1)))))
+
 (deftest bad-cidr
   (testing "poorly formed CIDR string"
     (is (thrown? Exception (cidr->bitmask legit-octet)))))
@@ -30,21 +35,21 @@
 
 (deftest happy-cidr-mask
   (testing "happy path, cidr->bitmask"
-    (is (= cidr-mask  (cidr->bitmask cidr-str)))
-    (is (= 0xcc000000 (cidr->bitmask "204.0.0.0/8")))   ;; 204 == 0xCC
-    (is (= 0xa000000  (cidr->bitmask "10.0.0.0/8")))
-	(is (= 0xfe000000 (cidr->bitmask "255.255.255.255/7")))
-	(is (= 0x0a0b0cfc (cidr->bitmask "10.11.12.255/30")))
-	(is (= 0x0a0b0c10 (cidr->bitmask "10.11.12.16/28")))))
+    (is (= cidr-mask  (first (cidr->bitmask cidr-str))))
+    (is (= 0xcc000000 (first (cidr->bitmask "204.0.0.0/8")))) ;; 204 == 0xCC
+    (is (= 0xa000000  (first (cidr->bitmask "10.0.0.0/8"))))
+	(is (= 0xfe000000 (first (cidr->bitmask "255.255.255.255/7"))))
+	(is (= 0x0a0b0cfc (first (cidr->bitmask "10.11.12.255/30"))))
+	(is (= 0x0a0b0c10 (first (cidr->bitmask "10.11.12.16/28"))))))
 
 (deftest within-mask
   (testing "within-mask, ip in scope"
-    (is (ip-within-mask? (cidr->bitmask "10.5.0.0/16") 16 (dotted->bits "10.5.169.250")))
-    (is (ip-within-mask? (cidr->bitmask "204.0.0.0/8")  8 (dotted->bits "204.255.255.255")))
+    (is (ip-within-mask? (first (cidr->bitmask "10.5.0.0/16")) 16 (dotted->bits "10.5.169.250")))
+    (is (ip-within-mask? (first (cidr->bitmask "204.0.0.0/8"))  8 (dotted->bits "204.255.255.255")))
     (is (ip-within-mask? 0xa000000 8 0xa0b001f)))
   (testing "ip not within cidr"
-    (is (not (ip-within-mask? (cidr->bitmask "10.5.5.0/23")  23 (dotted->bits "10.5.6.250"))))
-    (is (not (ip-within-mask? (cidr->bitmask "204.0.0.0/10") 10 (dotted->bits "204.127.45.2"))))
+    (is (not (ip-within-mask? (first (cidr->bitmask "10.5.5.0/23"))  23 (dotted->bits "10.5.6.250"))))
+    (is (not (ip-within-mask? (first (cidr->bitmask "204.0.0.0/10")) 10 (dotted->bits "204.127.45.2"))))
     (is (not (ip-within-mask? 0xa000000 16 0xa0b001f)))))
 
 (deftest cidr-range

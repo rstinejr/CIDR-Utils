@@ -1,4 +1,4 @@
-(defproject rhs-cidr-utils "0.1.2-SNAAPSHOT"
+(defproject rhs-cidr-utils "1.0.0"
   :description "Utilities for working with CIDRs"
   :url "https://github.com/rstinejr/CIDR-Utils"
   :license {:name "MIT License"
