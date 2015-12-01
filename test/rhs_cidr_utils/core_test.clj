@@ -59,6 +59,13 @@
       (is (and (= 0xa090000 (cidr-range 0)) (= 0xa09ffff (cidr-range 1)))
           (and (= 0x7f400000 (doc-range 0)) (= 0x7f40ffff (doc-range 1)))))))
 
+(deftest geo-cidr
+  (testing "missing cidr"
+    (let [cidr-str "73.0.0.0/8"
+          cidr-range (get-cidr-range cidr-str)]
+      (println (str "Range for " cidr-str ": " cidr-range))
+      (is (= 0x0ffffff (- (cidr-range 1) (cidr-range 0)))))))
+
 (deftest cidr-contained-by
   (testing "test cidr-contained-by?"
     (is (cidr-contained-by? "10.0.8.128/25" "10.0.0.0/16"))
