@@ -64,7 +64,12 @@
     (let [cidr-str "73.0.0.0/8"
           cidr-range (get-cidr-range cidr-str)]
       (println (str "Range for " cidr-str ": " cidr-range))
-      (is (= 0x0ffffff (- (cidr-range 1) (cidr-range 0)))))))
+      (is (= 0x0ffffff (- (cidr-range 1) (cidr-range 0))))))
+  (testing "missing empireblue.com"
+    (let [cidr-str "162.95.221.0/25"
+          cidr-range (get-cidr-range cidr-str)]
+      (println (str "Range for " cidr-str ": " cidr-range))
+      (is (= 127 (- (cidr-range 1) (cidr-range 0)))))))
 
 (deftest cidr-contained-by
   (testing "test cidr-contained-by?"
