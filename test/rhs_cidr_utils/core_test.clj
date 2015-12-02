@@ -69,7 +69,12 @@
     (let [cidr-str "162.95.221.0/25"
           cidr-range (get-cidr-range cidr-str)]
       (println (str "Range for " cidr-str ": " cidr-range))
-      (is (= 127 (- (cidr-range 1) (cidr-range 0)))))))
+      (is (= 127 (- (cidr-range 1) (cidr-range 0))))))
+  (testing "missing 76.177.49.255"
+    (let [cidr-str "76.117.0.0/16"
+          cidr-range (get-cidr-range cidr-str)]
+      (println (str "Range for " cidr-str ": " cidr-range))
+      (is (= 0xffff (- (cidr-range 1) (cidr-range 0)))))))
 
 (deftest cidr-contained-by
   (testing "test cidr-contained-by?"
