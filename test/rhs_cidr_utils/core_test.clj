@@ -59,22 +59,25 @@
       (is (and (= 0xa090000 (cidr-range 0)) (= 0xa09ffff (cidr-range 1)))
           (and (= 0x7f400000 (doc-range 0)) (= 0x7f40ffff (doc-range 1)))))))
 
+(defn disp-and-get-cidr-range
+  [cidr-str]
+  (let [cidr-range (get-cidr-range cidr-str)]
+    (println (str "Range for " cidr-str ": " cidr-range))
+    cidr-range))
+
 (deftest geo-cidr
   (testing "missing cidr"
-    (let [cidr-str "73.0.0.0/8"
-          cidr-range (get-cidr-range cidr-str)]
-      (println (str "Range for " cidr-str ": " cidr-range))
+    (let [cidr-range (disp-and-get-cidr-range "73.0.0.0/8")]
       (is (= 0x0ffffff (- (cidr-range 1) (cidr-range 0))))))
   (testing "missing empireblue.com"
-    (let [cidr-str "162.95.221.0/25"
-          cidr-range (get-cidr-range cidr-str)]
-      (println (str "Range for " cidr-str ": " cidr-range))
+    (let [cidr-range (disp-and-get-cidr-range "162.95.221.0/25")]
       (is (= 127 (- (cidr-range 1) (cidr-range 0))))))
   (testing "missing 76.177.49.255"
-    (let [cidr-str "76.117.0.0/16"
-          cidr-range (get-cidr-range cidr-str)]
-      (println (str "Range for " cidr-str ": " cidr-range))
-      (is (= 0xffff (- (cidr-range 1) (cidr-range 0)))))))
+    (let [cidr-range (disp-and-get-cidr-range "76.117.0.0/16")]
+      (is (= 0xffff (- (cidr-range 1) (cidr-range 0))))))
+  (testing "missing 23.51.96.0/20"
+    (let [cidr-range (disp-and-get-cidr-range "23.51.96.0/20")]
+      (is (= 0xfff (- (cidr-range 1) (cidr-range 0)))))))
 
 (deftest cidr-contained-by
   (testing "test cidr-contained-by?"
